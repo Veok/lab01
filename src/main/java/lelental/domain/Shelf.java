@@ -1,4 +1,6 @@
-package lelental;
+package lelental.domain;
+
+import lelental.domain.Cd;
 
 import java.util.List;
 
@@ -9,6 +11,13 @@ public class Shelf {
 
     private List<Cd> cdList;
 
+    public Shelf(List<Cd> cdList) {
+        this.cdList = cdList;
+    }
+
+    public Shelf() {
+    }
+
     public List<Cd> getCdList() {
         return cdList;
     }
@@ -16,4 +25,6 @@ public class Shelf {
     public void setCdList(List<Cd> cdList) {
         this.cdList = cdList;
     }
+
+
 }

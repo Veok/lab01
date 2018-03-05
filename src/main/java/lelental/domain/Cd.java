@@ -1,4 +1,4 @@
-package lelental;
+package lelental.domain;
 
 import java.util.List;
 
@@ -10,6 +10,12 @@ public class Cd {
     private String title;
     private List<Song> songList;
     private List<Author> authors;
+
+    public Cd(String title, List<Song> songList, List<Author> authors) {
+        this.title = title;
+        this.songList = songList;
+        this.authors = authors;
+    }
 
     public String getTitle() {
         return title;

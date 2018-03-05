@@ -1,4 +1,4 @@
-package lelental;
+package lelental.domain;
 
 /**
  * @author Paweł Lelental
@@ -7,6 +7,11 @@ public class Song {
 
     private String ellapsedTime;
     private String name;
+
+    public Song(String ellapsedTime, String name) {
+        this.ellapsedTime = ellapsedTime;
+        this.name = name;
+    }
 
     public String getEllapsedTime() {
         return ellapsedTime;

@@ -1,5 +1,6 @@
 package lelental;
 
+import lelental.domain.Shelf;
 import org.junit.Before;
 import org.junit.Test;
 
