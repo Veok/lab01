@@ -81,7 +81,7 @@ public class AuthorRepositoryTest {
 
     @Test
     public void update_author() {
-        Author author = AuthorRepositoryFactory.getInstance().findById(1);
+        Author author = AuthorRepositoryFactory.getInstance().findById(2);
         if (author == null) {
             exception.expect(ClassNotFoundException.class);
         }
