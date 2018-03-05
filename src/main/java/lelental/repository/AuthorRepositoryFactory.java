@@ -6,6 +6,6 @@ package lelental.repository;
 public class AuthorRepositoryFactory {
 
     public static AuthorRepository getInstance() {
-        return null;
+        return new AuthorRepositoryImpl();
     }
 }

@@ -25,7 +25,7 @@ public interface AuthorRepository {
 
     Author findByName(String name);
 
-    void populateDb();
+    void populateDb(List<Author> authorsDb);
 
     void dropAuthorTable();
 }

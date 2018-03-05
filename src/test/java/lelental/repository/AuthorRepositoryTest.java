@@ -23,8 +23,6 @@ import static org.junit.Assert.*;
 public class AuthorRepositoryTest {
 
     private List<Author> authorsDb;
-    private List<Cd> cdDb;
-    private List<Song> songDb;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -32,11 +30,9 @@ public class AuthorRepositoryTest {
     @Before
     public void create_db() {
         authorsDb = new ArrayList<>();
-        cdDb = new ArrayList<>();
-        songDb = new ArrayList<>();
         Author author = new Author(1, "Rammstein", new Date(1988), new ArrayList<>());
         authorsDb.add(author);
-        AuthorRepositoryFactory.getInstance().populateDb();
+        AuthorRepositoryFactory.getInstance().populateDb(authorsDb);
     }
 
     @Test
@@ -73,20 +69,9 @@ public class AuthorRepositoryTest {
 
     @Test
     public void delete_author_by_id() {
-        Author author = AuthorRepositoryFactory.getInstance().findById(3);
+        Author author = AuthorRepositoryFactory.getInstance().findById(1);
         AuthorRepositoryFactory.getInstance().delete(author);
-
-        assertTrue(AuthorRepositoryFactory.getInstance().findById(2).getId() == 2 &&
-                AuthorRepositoryFactory.getInstance().findById(1).getName().equals("IRA"));
-
-        assertTrue(AuthorRepositoryFactory.getInstance().findById(1).getId() == 1 &&
-                AuthorRepositoryFactory.getInstance().findById(1).getName().equals("Rammstein"));
-
-        assertTrue(AuthorRepositoryFactory.getInstance().findById(4).getId() == 4 &&
-                AuthorRepositoryFactory.getInstance().findById(1).getName().equals("Pidżama Porno"));
-
-
-        assertEquals(null, AuthorRepositoryFactory.getInstance().findByName("Rammstein2"));
+        assertEquals(null, AuthorRepositoryFactory.getInstance().findByName("Rammstein"));
     }
 
     @Test
