@@ -1,5 +1,6 @@
 package lelental.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,14 +12,12 @@ public class Author {
     private long id;
     private String name;
     private Date dateOfCreation;
-    private List<Cd> listOfCds;
 
 
-    public Author(long id, String name, Date dateOfCreation, List<Cd> listOfCds) {
+    public Author(long id, String name, Date dateOfCreation) {
         this.id = id;
         this.name = name;
         this.dateOfCreation = dateOfCreation;
-        this.listOfCds = listOfCds;
     }
 
     public String getName() {
@@ -37,13 +36,6 @@ public class Author {
         this.dateOfCreation = dateOfCreation;
     }
 
-    public List<Cd> getListOfCds() {
-        return listOfCds;
-    }
-
-    public void setListOfCds(List<Cd> listOfCds) {
-        this.listOfCds = listOfCds;
-    }
 
     public long getId() {
         return id;

@@ -2,6 +2,8 @@ package lelental.repository;
 
 import lelental.domain.Author;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -9,23 +11,27 @@ import java.util.List;
  **/
 public interface AuthorRepository {
 
-    void insert(Author author1);
+    void insert(Author author1) throws SQLException;
 
     void delete(int id);
 
     void update(Author author);
 
-    Author findById(int id);
+    Author findById(int id) throws SQLException;
 
-    List<Author> findAll();
+    List<Author> findAll() throws SQLException;
 
     void delete(Author author);
 
-    String sayWhoYouAre();
+    String sayWhoYouAre() ;
 
     Author findByName(String name);
 
-    void populateDb(List<Author> authorsDb);
+    void populateDb() throws SQLException;
 
-    void dropAuthorTable();
+    void dropAuthorTable() throws SQLException;
+
+    Connection getConnection();
+
+    void setConnection(Connection connection) throws SQLException;
 }
