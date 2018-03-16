@@ -23,7 +23,7 @@ public interface AuthorRepository {
 
     void delete(Author author);
 
-    String sayWhoYouAre() ;
+    String sayWhoYouAre() throws SQLException;
 
     Author findByName(String name);
 

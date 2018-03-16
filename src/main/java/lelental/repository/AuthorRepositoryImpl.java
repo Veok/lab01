@@ -88,8 +88,11 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public String sayWhoYouAre() {
-        return "I'm simple crud repo without db";
+    public String sayWhoYouAre() throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT (id,name,date_of_creation) FROM Author WHERE id = 1");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        Author author = new Author(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getDate("date_of_creation"));
+        return "Hello I'm" + author.getName();
     }
 
     @Override

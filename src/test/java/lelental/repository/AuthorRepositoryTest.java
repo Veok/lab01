@@ -29,7 +29,6 @@ import static org.mockito.Mockito.when;
 /**
  * @author Paweł Lelental
  **/
-@RunWith(MockitoJUnitRunner.class)
 public class AuthorRepositoryTest {
 
     private List<Author> authorsDb;
@@ -47,18 +46,13 @@ public class AuthorRepositoryTest {
     @Before
     public void create_db() throws SQLException {
         authorRepository = AuthorRepositoryFactory.getInstance("jdbc:hsqldb:hsql://localhost/");
-//        when(connectionMock.prepareStatement("INSERT INTO Author (name, date_of_creation) VALUES (?, ?)"))
-//                .thenReturn(insertStatementMock);
-//        when(connectionMock.prepareStatement("SELECT id, name, date_of_creation FROM Author"))
-//                .thenReturn(selectStatementMock);
-//
-//        verify(connectionMock).prepareStatement("INSERT INTO Author (name, date_of_creation) VALUES (?, ?)");
-//        verify(connectionMock).prepareStatement("SELECT id, name, date_of_creation FROM Author");
     }
 
     @Test
-    public void say_hello_repository()  {
-        assertThat("I'm simple crud repo without db", CoreMatchers.containsString(authorRepository.sayWhoYouAre()));
+    public void say_hello_repository() throws SQLException {
+        assertNotNull(authorRepository.sayWhoYouAre());
+        System.out.println(authorRepository.sayWhoYouAre());
+
     }
 
     @Test
@@ -111,7 +105,7 @@ public class AuthorRepositoryTest {
     @After
     public void drop_author_table() throws SQLException {
         authorRepository.dropAuthorTable();
-     //   assertEquals(null, authorRepository.findAll());
+        //   assertEquals(null, authorRepository.findAll());
         exception.expect(SQLException.class);
 
     }
