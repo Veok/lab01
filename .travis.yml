@@ -3,7 +3,6 @@ jdk:
   - oraclejdk8
 before_script:
 - cd scripts; ./server.sh &
-- sleep 1
 script:
-- cd ..; mvn test
+- cd ..; sleep 1; mvn test
 
