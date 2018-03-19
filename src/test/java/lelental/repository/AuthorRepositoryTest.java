@@ -99,6 +99,12 @@ public class AuthorRepositoryTest {
         author.setName("ira");
         authorRepository.update(author);
         assertEquals("ira", authorRepository.findByName("ira").getName());
+
+        authorRepository.findAll().forEach(x->{
+            if(x.getName().equals(author.getName()) && x.getId() != author.getId()){
+               assertTrue(false);
+            }
+        });
     }
 
     @After

@@ -48,14 +48,11 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         addAuthorStatement.executeUpdate();
     }
 
-    @Override
-    public void delete(int id) {
-
-    }
 
     @Override
-    public void update(Author author) {
-
+    public void update(Author author) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Author set name = ?, date_of_creation = ? where id= ? ");
+        preparedStatement.executeQuery();
     }
 
     @Override

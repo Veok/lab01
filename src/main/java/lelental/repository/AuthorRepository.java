@@ -13,9 +13,8 @@ public interface AuthorRepository {
 
     void insert(Author author1) throws SQLException;
 
-    void delete(int id);
 
-    void update(Author author);
+    void update(Author author) throws SQLException;
 
     Author findById(int id) throws SQLException;
 
