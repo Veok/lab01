@@ -3,6 +3,4 @@ jdk:
   - oraclejdk8
 script:
   - mvn test
-
-services"
-  - h2
+  - cd scripts

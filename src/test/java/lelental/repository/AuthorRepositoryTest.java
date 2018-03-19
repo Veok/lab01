@@ -50,9 +50,8 @@ public class AuthorRepositoryTest {
 
     @Test
     public void say_hello_repository() throws SQLException {
-        assertNotNull(authorRepository.sayWhoYouAre());
         System.out.println(authorRepository.sayWhoYouAre());
-
+        assertNotNull(authorRepository.sayWhoYouAre());
     }
 
     @Test
