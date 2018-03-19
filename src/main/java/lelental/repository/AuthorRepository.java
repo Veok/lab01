@@ -20,7 +20,7 @@ public interface AuthorRepository {
 
     List<Author> findAll() throws SQLException;
 
-    void delete(Author author);
+    void delete(Author author) throws SQLException;
 
     String sayWhoYouAre() throws SQLException;
 

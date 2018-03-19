@@ -31,7 +31,6 @@ import static org.mockito.Mockito.when;
  **/
 public class AuthorRepositoryTest {
 
-    private List<Author> authorsDb;
     private AuthorRepository authorRepository;
 
 
@@ -39,13 +38,13 @@ public class AuthorRepositoryTest {
     public final ExpectedException exception = ExpectedException.none();
 
     public AuthorRepositoryTest() throws SQLException {
-        String dbConnectionURL = "jdbc:hsqldb:hsql://localhost/workdb";
+        String dbConnectionURL = "jdbc:hsqldb:hsql://localhost";
         authorRepository = AuthorRepositoryFactory.getInstance(dbConnectionURL);
     }
 
     @Before
     public void create_db() throws SQLException {
-        authorRepository = AuthorRepositoryFactory.getInstance("jdbc:hsqldb:hsql://localhost/workdb");
+        authorRepository = AuthorRepositoryFactory.getInstance("jdbc:hsqldb:hsql://localhost");
     }
 
     @Test
@@ -82,6 +81,10 @@ public class AuthorRepositoryTest {
         Author author = authorRepository.findById(1);
         authorRepository.delete(author);
         assertEquals(null, authorRepository.findByName("Rammstein"));
+
+        if(authorRepository.findAll().isEmpty()){
+            assertTrue(false);
+        }
     }
 
     @Test
