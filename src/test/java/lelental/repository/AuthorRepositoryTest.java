@@ -82,6 +82,7 @@ public class AuthorRepositoryTest {
         authorRepository.delete(author);
         assertEquals(null, authorRepository.findByName("Rammstein"));
 
+
         if(authorRepository.findAll().isEmpty()){
             assertTrue(false);
         }
