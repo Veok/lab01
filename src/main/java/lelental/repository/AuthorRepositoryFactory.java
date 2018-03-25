@@ -1,6 +1,5 @@
 package lelental.repository;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -10,7 +9,8 @@ import java.sql.SQLException;
 public class AuthorRepositoryFactory {
 
 
-    public static AuthorRepository getInstance(String connectionUrl) throws SQLException {
-        return new AuthorRepositoryImpl(DriverManager.getConnection(connectionUrl));
+    public static AuthorRepository getInstance() throws SQLException {
+        String dbConnectionURL = "jdbc:hsqldb:hsql://localhost/workdb";
+        return new AuthorRepositoryImpl(DriverManager.getConnection(dbConnectionURL, "sa", ""));
     }
 }
