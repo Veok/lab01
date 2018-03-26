@@ -20,6 +20,9 @@ public class Author {
         this.dateOfCreation = dateOfCreation;
     }
 
+    public Author() {
+    }
+
     public String getName() {
         return name;
     }

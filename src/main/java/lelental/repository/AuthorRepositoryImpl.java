@@ -15,6 +15,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     private Connection connection;
     private PreparedStatement addAuthorStatement;
     private PreparedStatement getAllAuthorsStatement;
+    private PreparedStatement deleteAuthor;
+    private PreparedStatement findById;
 
     public AuthorRepositoryImpl(Connection connection) throws SQLException {
         this.connection = connection;
@@ -24,6 +26,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         setConnection(connection);
     }
 
+    public AuthorRepositoryImpl() {
+    }
 
     public boolean isDatabaseReady() {
         try {
@@ -42,10 +46,15 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public void insert(Author author1) throws SQLException {
-        addAuthorStatement.setString(1, author1.getName());
-        addAuthorStatement.setDate(2, new java.sql.Date(author1.getDateOfCreation().getTime()));
-        addAuthorStatement.executeUpdate();
+    public boolean insert(Author author1) {
+        try {
+            addAuthorStatement.setString(1, author1.getName());
+            addAuthorStatement.setDate(2, new java.sql.Date(author1.getDateOfCreation().getTime()));
+            addAuthorStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
 
@@ -59,9 +68,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public Author findById(int id) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT (id,name,date_of_creation) FROM Author WHERE id = ?");
-        ResultSet resultSet = preparedStatement.executeQuery();
+    public Author findById(long id) throws SQLException {
+        ResultSet resultSet = findById.executeQuery();
         return new Author(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getDate("date_of_creation"));
     }
 
@@ -83,10 +91,9 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public void delete(Author author) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Author  WHERE id= ? ");
-        preparedStatement.setLong(1, author.getId());
-        preparedStatement.executeQuery();
+    public void delete(long id) throws SQLException {
+        deleteAuthor.setLong(1, id);
+        deleteAuthor.executeQuery();
     }
 
     @Override
@@ -124,6 +131,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
                         ("INSERT INTO Author (name, date_of_creation) VALUES (?, ?)");
         getAllAuthorsStatement = connection.
                 prepareStatement("SELECT id, name, date_of_creation FROM Author");
+        deleteAuthor = connection.prepareStatement("DELETE FROM Author WHERE id = ?");
+        findById = connection.prepareStatement("SELECT (id,name,date_of_creation) FROM Author WHERE id = ?");
 
     }
 }

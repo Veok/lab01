@@ -11,16 +11,15 @@ import java.util.List;
  **/
 public interface AuthorRepository {
 
-    void insert(Author author1) throws SQLException;
-
+    boolean insert(Author author1);
 
     void update(Author author) throws SQLException;
 
-    Author findById(int id) throws SQLException;
+    Author findById(long id) throws SQLException;
 
     List<Author> findAll() throws SQLException;
 
-    void delete(Author author) throws SQLException;
+    void delete(long id) throws SQLException;
 
     String sayWhoYouAre() throws SQLException;
 

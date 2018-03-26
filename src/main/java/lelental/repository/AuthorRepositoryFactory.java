@@ -13,4 +13,8 @@ public class AuthorRepositoryFactory {
         String dbConnectionURL = "jdbc:hsqldb:hsql://localhost/workdb";
         return new AuthorRepositoryImpl(DriverManager.getConnection(dbConnectionURL));
     }
+
+    public static AuthorRepository getInstance2(){
+        return new AuthorRepositoryImpl();
+    }
 }
