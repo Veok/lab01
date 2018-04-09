@@ -5,7 +5,6 @@ import lelental.domain.Author;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Paweł Lelental
@@ -69,8 +68,12 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public Author findById(long id) throws SQLException {
+        findById.setLong(1, id);
         ResultSet resultSet = findById.executeQuery();
-        return new Author(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getDate("date_of_creation"));
+        Long idFromDb = resultSet.getLong("id");
+        String name = resultSet.getString("name");
+        Date dateOfCreation = resultSet.getDate("date_of_creation");
+        return new Author(idFromDb, name, dateOfCreation);
     }
 
     @Override
@@ -132,7 +135,9 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         getAllAuthorsStatement = connection.
                 prepareStatement("SELECT id, name, date_of_creation FROM Author");
         deleteAuthor = connection.prepareStatement("DELETE FROM Author WHERE id = ?");
-        findById = connection.prepareStatement("SELECT (id,name,date_of_creation) FROM Author WHERE id = ?");
+        findById = connection.prepareStatement("SELECT id,name,date_of_creation FROM Author WHERE id = ?");
 
     }
+
+
 }

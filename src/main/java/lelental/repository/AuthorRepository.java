@@ -31,5 +31,7 @@ public interface AuthorRepository {
 
     Connection getConnection();
 
+    boolean isDatabaseReady();
+
     void setConnection(Connection connection) throws SQLException;
 }

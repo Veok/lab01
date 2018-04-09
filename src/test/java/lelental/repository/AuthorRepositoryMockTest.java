@@ -14,7 +14,8 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,9 +25,8 @@ import static org.mockito.Mockito.when;
  **/
 
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class AuthorRepositoryMockTest {
-
     @Mock
     private Connection connectionMock;
 
@@ -40,7 +40,10 @@ public class AuthorRepositoryMockTest {
     private PreparedStatement deleteStatementMock;
 
     @Mock
-    private PreparedStatement findByIdStatementMock;
+    private PreparedStatement findById;
+
+    @Mock
+    ResultSet resultSet;
 
     private AuthorRepository authorRepository;
 
@@ -50,7 +53,7 @@ public class AuthorRepositoryMockTest {
         when(connectionMock.prepareStatement("INSERT INTO Author (name, date_of_creation) VALUES (?, ?)")).thenReturn(insertStatementMock);
         when(connectionMock.prepareStatement("SELECT id, name, date_of_creation FROM Author")).thenReturn(selectStatementMock);
         when(connectionMock.prepareStatement("DELETE FROM Author WHERE id = ?")).thenReturn(deleteStatementMock);
-        when(connectionMock.prepareStatement("SELECT (id,name,date_of_creation) FROM Author WHERE id = ?")).thenReturn(findByIdStatementMock);
+        when(connectionMock.prepareStatement("SELECT id,name,date_of_creation FROM Author WHERE id = ?")).thenReturn(findById);
 
         authorRepository = AuthorRepositoryFactory.getInstance2();
         authorRepository.setConnection(connectionMock);
@@ -58,11 +61,17 @@ public class AuthorRepositoryMockTest {
         verify(connectionMock).prepareStatement("INSERT INTO Author (name, date_of_creation) VALUES (?, ?)");
         verify(connectionMock).prepareStatement("SELECT id, name, date_of_creation FROM Author");
         verify(connectionMock).prepareStatement("DELETE FROM Author WHERE id = ?");
-        verify(connectionMock).prepareStatement("SELECT (id,name,date_of_creation) FROM Author WHERE id = ?");
+        verify(connectionMock).prepareStatement("SELECT id,name,date_of_creation FROM Author WHERE id = ?");
+        when(selectStatementMock.executeQuery()).thenReturn(resultSet);
     }
 
     @Test
     public void say_hello_repository() throws SQLException {
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void null_create_exception() {
+        authorRepository.insert(null);
     }
 
     @Test
@@ -89,19 +98,18 @@ public class AuthorRepositoryMockTest {
 
     @Test
     public void find_by_id() throws SQLException {
-//        Author author1 = new Author(2, "IRA", new Date(1987));
-//        authorRepository.insert(author1);
-//        when(insertStatementMock.executeUpdate()).thenReturn(1);
-//        verify(insertStatementMock, times(1)).setString(1, "IRA");
-//        verify(insertStatementMock, times(1)).setDate(2, new java.sql.Date(1987));
-//        authorRepository.findById(1);
-//        when(selectStatementMock.executeQuery()).thenReturn((ResultSet) author1);
-//        verify(selectStatementMock).executeQuery();
+        Author author1 = new Author(2, "IRA", new Date(1987));
+        authorRepository.insert(author1);
+        when(insertStatementMock.executeUpdate()).thenReturn(1);
+        verify(insertStatementMock, times(1)).setString(1, "IRA");
+        verify(insertStatementMock, times(1)).setDate(2, new java.sql.Date(1987));
+        verify(insertStatementMock).executeUpdate();
+        authorRepository.findById(2);
+        when(selectStatementMock.executeQuery()).thenReturn(resultSet);
+        verify(selectStatementMock).executeQuery();
     }
 
-    @Test
-    public void update_author() throws SQLException {
-    }
+
 
 
 }
