@@ -5,8 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.validation.constraints.Null;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,11 +16,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Paweł Lelental
@@ -41,11 +39,50 @@ public class AuthorRepositoryMockTest {
 
     @Mock
     private PreparedStatement findById;
+    @Mock
+    private PreparedStatement update;
 
     @Mock
     ResultSet resultSet;
 
     private AuthorRepository authorRepository;
+
+    abstract class AbstractResultSet implements ResultSet {
+        int i = 0;
+
+        @Override
+        public boolean next() throws SQLException {
+            if (i == 1) {
+                return false;
+            }
+            i++;
+            return true;
+        }
+
+        @Override
+        public String getString(String columnLabel) throws SQLException {
+            if (columnLabel.equals("name")) {
+                return "IRA";
+            }
+            return null;
+        }
+
+        @Override
+        public java.sql.Date getDate(String columnLabel) throws SQLException {
+            if (columnLabel.equals("date_of_creation")) {
+                return new java.sql.Date(1987);
+            }
+            return null;
+        }
+
+        @Override
+        public int getInt(String columnLabel) throws SQLException {
+            if (columnLabel.equals("id")) {
+                return 2;
+            }
+            return 0;
+        }
+    }
 
     @Before
     public void setup_db() throws SQLException {
@@ -54,7 +91,7 @@ public class AuthorRepositoryMockTest {
         when(connectionMock.prepareStatement("SELECT id, name, date_of_creation FROM Author")).thenReturn(selectStatementMock);
         when(connectionMock.prepareStatement("DELETE FROM Author WHERE id = ?")).thenReturn(deleteStatementMock);
         when(connectionMock.prepareStatement("SELECT id,name,date_of_creation FROM Author WHERE id = ?")).thenReturn(findById);
-
+        when(connectionMock.prepareStatement("UPDATE Author SET name = ?, date_of_creation = ? WHERE id= ? ")).thenReturn(update);
         authorRepository = AuthorRepositoryFactory.getInstance2();
         authorRepository.setConnection(connectionMock);
 
@@ -62,14 +99,12 @@ public class AuthorRepositoryMockTest {
         verify(connectionMock).prepareStatement("SELECT id, name, date_of_creation FROM Author");
         verify(connectionMock).prepareStatement("DELETE FROM Author WHERE id = ?");
         verify(connectionMock).prepareStatement("SELECT id,name,date_of_creation FROM Author WHERE id = ?");
+        verify(connectionMock).prepareStatement("UPDATE Author SET name = ?, date_of_creation = ? WHERE id= ? ");
         when(selectStatementMock.executeQuery()).thenReturn(resultSet);
     }
 
-    @Test
-    public void say_hello_repository() throws SQLException {
-    }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void null_create_exception() {
         authorRepository.insert(null);
     }
@@ -99,17 +134,27 @@ public class AuthorRepositoryMockTest {
     @Test
     public void find_by_id() throws SQLException {
         Author author1 = new Author(2, "IRA", new Date(1987));
-        authorRepository.insert(author1);
-        when(insertStatementMock.executeUpdate()).thenReturn(1);
-        verify(insertStatementMock, times(1)).setString(1, "IRA");
-        verify(insertStatementMock, times(1)).setDate(2, new java.sql.Date(1987));
-        verify(insertStatementMock).executeUpdate();
-        authorRepository.findById(2);
-        when(selectStatementMock.executeQuery()).thenReturn(resultSet);
-        verify(selectStatementMock).executeQuery();
+//        authorRepository.insert(author1);
+//        when(insertStatementMock.executeUpdate()).thenReturn(1);
+//        verify(insertStatementMock, times(1)).setString(1, "IRA");
+//        verify(insertStatementMock, times(1)).setDate(2, new java.sql.Date(1987));
+//        verify(insertStatementMock).executeUpdate();
+        when(connectionMock.prepareStatement("SELECT id,name,date_of_creation FROM Author WHERE id = ?")).thenReturn(selectStatementMock);
+        AbstractResultSet mockResultSet = mock(AbstractResultSet.class, Mockito.CALLS_REAL_METHODS);
+        when(mockResultSet.next()).thenCallRealMethod();
+        when(mockResultSet.getInt("id")).thenCallRealMethod();
+        when(mockResultSet.getString("name")).thenCallRealMethod();
+        when(mockResultSet.getDate("date_of_creation")).thenCallRealMethod();
+        when(selectStatementMock.executeQuery()).thenReturn(mockResultSet);
+        assertEquals(author1,authorRepository.findById(1));
     }
 
-
-
+    @Test
+    public void update() throws SQLException {
+        Author author1 = new Author(2, "IRA", new Date(1987));
+        authorRepository.update(author1);
+        when(update.executeUpdate()).thenReturn(1);
+        verify(update).executeQuery();
+    }
 
 }

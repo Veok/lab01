@@ -16,6 +16,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     private PreparedStatement getAllAuthorsStatement;
     private PreparedStatement deleteAuthor;
     private PreparedStatement findById;
+    private PreparedStatement update;
 
     public AuthorRepositoryImpl(Connection connection) throws SQLException {
         this.connection = connection;
@@ -58,12 +59,18 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
 
     @Override
-    public void update(Author author) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Author SET name = ?, date_of_creation = ? WHERE id= ? ");
-        preparedStatement.setString(1, author.getName());
-        preparedStatement.setDate(2, new java.sql.Date(author.getDateOfCreation().getTime()));
-        preparedStatement.setLong(3, author.getId());
-        preparedStatement.executeQuery();
+    public boolean update(Author author) throws SQLException {
+
+        try {
+            PreparedStatement preparedStatement = update;
+            preparedStatement.setString(1, author.getName());
+            preparedStatement.setDate(2, new java.sql.Date(author.getDateOfCreation().getTime()));
+            preparedStatement.setLong(3, author.getId());
+            preparedStatement.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     @Override
@@ -136,7 +143,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
                 prepareStatement("SELECT id, name, date_of_creation FROM Author");
         deleteAuthor = connection.prepareStatement("DELETE FROM Author WHERE id = ?");
         findById = connection.prepareStatement("SELECT id,name,date_of_creation FROM Author WHERE id = ?");
-
+        update = connection.prepareStatement("UPDATE Author SET name = ?, date_of_creation = ? WHERE id= ? ");
     }
 
 

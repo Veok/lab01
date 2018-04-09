@@ -13,7 +13,7 @@ public interface AuthorRepository {
 
     boolean insert(Author author1);
 
-    void update(Author author) throws SQLException;
+    boolean update(Author author) throws SQLException;
 
     Author findById(long id) throws SQLException;
 
