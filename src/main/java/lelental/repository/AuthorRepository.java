@@ -19,7 +19,7 @@ public interface AuthorRepository {
 
     List<Author> findAll() throws SQLException;
 
-    void delete(long id) throws SQLException;
+    boolean delete(long id) throws SQLException;
 
     String sayWhoYouAre() throws SQLException;
 

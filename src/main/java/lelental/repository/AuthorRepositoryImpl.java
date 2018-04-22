@@ -101,9 +101,14 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public void delete(long id) throws SQLException {
-        deleteAuthor.setLong(1, id);
-        deleteAuthor.executeQuery();
+    public boolean delete(long id) throws SQLException {
+        try {
+            deleteAuthor.setLong(1, id);
+            deleteAuthor.executeQuery();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override

@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.validation.constraints.Null;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,11 +75,12 @@ public class AuthorRepositoryMockTest {
         }
 
         @Override
-        public int getInt(String columnLabel) throws SQLException {
-            if (columnLabel.equals("id")) {
+        public long getLong(String columnLabel) throws SQLException {
+            if(columnLabel.equals("id")){
                 return 2;
+            }else{
+                return 0;
             }
-            return 0;
         }
     }
 
@@ -127,33 +127,31 @@ public class AuthorRepositoryMockTest {
         when(insertStatementMock.executeUpdate()).thenReturn(1);
         verify(insertStatementMock, times(1)).setString(1, "IRA");
         verify(insertStatementMock, times(1)).setDate(2, new java.sql.Date(1987));
-        authorRepository.delete(1);
+        assertEquals(true,authorRepository.delete(1));
         verify(deleteStatementMock).executeQuery();
     }
 
     @Test
     public void find_by_id() throws SQLException {
         Author author1 = new Author(2, "IRA", new Date(1987));
-//        authorRepository.insert(author1);
-//        when(insertStatementMock.executeUpdate()).thenReturn(1);
-//        verify(insertStatementMock, times(1)).setString(1, "IRA");
-//        verify(insertStatementMock, times(1)).setDate(2, new java.sql.Date(1987));
-//        verify(insertStatementMock).executeUpdate();
-        when(connectionMock.prepareStatement("SELECT id,name,date_of_creation FROM Author WHERE id = ?")).thenReturn(selectStatementMock);
         AbstractResultSet mockResultSet = mock(AbstractResultSet.class, Mockito.CALLS_REAL_METHODS);
+        when(connectionMock.prepareStatement("SELECT id,name,date_of_creation FROM Author WHERE id = ?")
+                .executeQuery())
+                .thenReturn(mockResultSet);
         when(mockResultSet.next()).thenCallRealMethod();
-        when(mockResultSet.getInt("id")).thenCallRealMethod();
+        when(mockResultSet.getLong("id")).thenCallRealMethod();
         when(mockResultSet.getString("name")).thenCallRealMethod();
         when(mockResultSet.getDate("date_of_creation")).thenCallRealMethod();
-        when(selectStatementMock.executeQuery()).thenReturn(mockResultSet);
-        assertEquals(author1,authorRepository.findById(1));
+        assertEquals(author1.getId(), authorRepository.findById(2).getId());
+        assertEquals(author1.getName(), authorRepository.findById(2).getName());
+        assertEquals(author1.getDateOfCreation(), authorRepository.findById(2).getDateOfCreation());
     }
 
     @Test
     public void update() throws SQLException {
-        Author author1 = new Author(2, "IRA", new Date(1987));
-        authorRepository.update(author1);
+        Author author1 = new Author(2, "IRA2", new Date(1987));
         when(update.executeUpdate()).thenReturn(1);
+        assertEquals(true,authorRepository.update(author1));
         verify(update).executeQuery();
     }
 
