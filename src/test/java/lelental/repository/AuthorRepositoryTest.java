@@ -1,32 +1,21 @@
 package lelental.repository;
 
 import lelental.domain.Author;
-import lelental.domain.Cd;
-import lelental.domain.Song;
-import org.hamcrest.CoreMatchers;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
 /**
  * @author Paweł Lelental
  **/
-@Ignore
 public class AuthorRepositoryTest {
 
     private AuthorRepository authorRepository;
@@ -81,7 +70,7 @@ public class AuthorRepositoryTest {
         assertEquals(null, authorRepository.findByName("Rammstein"));
 
 
-        if(authorRepository.findAll().isEmpty()){
+        if (authorRepository.findAll().isEmpty()) {
             assertTrue(false);
         }
     }
@@ -100,18 +89,18 @@ public class AuthorRepositoryTest {
 
         author.setName("ira");
         authorRepository.update(author);
-        assertEquals("ira", authorRepository.findByName("ira").getName());
+        assertEquals("ira", authorRepository.findByName("ira").stream().findFirst().get().getName());
 
-        authorRepository.findAll().forEach(x->{
-            if(x.getName().equals(author.getName()) && x.getId() != author.getId()){
-               assertTrue(false);
+        authorRepository.findAll().forEach(x -> {
+            if (x.getName().equals(author.getName()) && x.getId() != author.getId()) {
+                assertTrue(false);
             }
         });
     }
 
     @After
     public void drop_author_table() throws SQLException {
-        authorRepository.dropAuthorTable();
+             authorRepository.dropAuthorTable();
         //   assertEquals(null, authorRepository.findAll());
         exception.expect(SQLException.class);
 

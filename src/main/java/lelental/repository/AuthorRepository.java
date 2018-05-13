@@ -23,7 +23,7 @@ public interface AuthorRepository {
 
     String sayWhoYouAre() throws SQLException;
 
-    Author findByName(String name);
+    List<Author> findByName(String name) throws SQLException;
 
     void populateDb() throws SQLException;
 
