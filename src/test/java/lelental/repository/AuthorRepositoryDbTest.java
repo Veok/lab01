@@ -11,6 +11,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author Paweł Lelental
  **/
 @RunWith(JUnit4.class)
+@Ignore
 public class AuthorRepositoryDbTest extends DBTestCase {
 
 
