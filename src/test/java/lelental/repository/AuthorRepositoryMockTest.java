@@ -128,7 +128,7 @@ public class AuthorRepositoryMockTest {
         verify(insertStatementMock, times(1)).setString(1, "IRA");
         verify(insertStatementMock, times(1)).setDate(2, new java.sql.Date(1987));
         assertEquals(true,authorRepository.delete(1));
-        verify(deleteStatementMock).executeQuery();
+        verify(deleteStatementMock).executeUpdate();
     }
 
     @Test
@@ -152,7 +152,7 @@ public class AuthorRepositoryMockTest {
         Author author1 = new Author(2, "IRA2", new Date(1987));
         when(update.executeUpdate()).thenReturn(1);
         assertEquals(true,authorRepository.update(author1));
-        verify(update).executeQuery();
+        verify(update).executeUpdate();
     }
 
 }
