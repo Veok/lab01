@@ -7,6 +7,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -16,6 +17,7 @@ import java.sql.DriverManager;
  * @author Paweł Lelental
  **/
 @RunWith(Suite.class)
+@Ignore
 @Suite.SuiteClasses({
         AuthorRepositoryDbTest.class
 })
