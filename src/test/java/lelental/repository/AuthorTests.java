@@ -17,7 +17,6 @@ import java.sql.DriverManager;
  * @author Paweł Lelental
  **/
 @RunWith(Suite.class)
-@Ignore
 @Suite.SuiteClasses({
         AuthorRepositoryDbTest.class
 })
