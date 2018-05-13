@@ -26,7 +26,6 @@ import java.util.List;
 @RunWith(JUnit4.class)
 public class AuthorRepositoryDbTest extends DBTestCase {
 
-    public static String url = "jdbc:hsqldb:hsql://localhost";
 
     private AuthorRepository authorRepository;
     private Author author;

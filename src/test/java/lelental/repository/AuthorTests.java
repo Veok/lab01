@@ -22,11 +22,11 @@ import java.sql.DriverManager;
 public class AuthorTests {
     @BeforeClass
     public static void before() throws Exception {
-        String url = "jdbc:hsqldb:hsql://localhost";
+        String url = "jdbc:hsqldb:hsql://localhost/workdb";
 
         new AuthorRepositoryImpl(DriverManager.getConnection(url));
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "org.hsqldb.jdbcDriver");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:hsqldb:hsql://localhost");
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:hsqldb:hsql://localhost/workdb");
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "sa");
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "");
 
