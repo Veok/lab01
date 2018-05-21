@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <ALBUM ID="2" NAME="DRONES" DATE_OF_PUBLISH="2015-03-11" IS_GRAMMY_AWARD="FALSE" AUTHOR_ID="2"/>
+    <ALBUM ID="3" NAME="Liebe is fur alle da" DATE_OF_PUBLISH="2005-03-11" IS_GRAMMY_AWARD="FALSE" AUTHOR_ID="3"/>
+</dataset>
